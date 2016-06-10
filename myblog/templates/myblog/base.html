@@ -1,0 +1,60 @@
+{% load myblog_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap-theme.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/font.css" %}" rel="stylesheet">
+    <link href="{% static "css/blog.css" %}" rel="stylesheet">
+</head>
+<body>
+<div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+             {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="panel panel-info">
+                    <div class="panel-heading">我的博客</div>
+                    <div class="panel-body">
+                        <p>总共写了 {% total_posts %} 篇.</p>
+                        <p><a href="{% url "myblog:post_feed" %}">订阅RSS</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">最新的博客</div>
+                    <div class="panel-body">
+                        {% show_latest_posts %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-success">
+                    <div class="panel-heading">热评的博客</div>
+                    <div class="panel-body">
+                        {% get_most_commented_posts as most_commented_posts %}
+                        <ul>
+                            {% for post in most_commented_posts %}
+                                <li>
+                                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<hr>
+<footer>
+    <p>&copy; Weaver 2016</p>
+</footer>
+</div>
+</body>
+</html>
